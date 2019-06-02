@@ -7,16 +7,29 @@
 #include "engine/World.h"
 
 #include "Engine/Classes/Kismet/GameplayStatics.h"
+#include "Engine/Classes/GameFramework/PlayerStart.h"
 
 ABomberman2GameMode::ABomberman2GameMode()
 {
-	// use our custom PlayerController class
-	PlayerControllerClass = ABomberman2PlayerController::StaticClass();
+}
 
-	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDownCPP/Blueprints/TopDownCharacter"));
-	if (PlayerPawnBPClass.Class != NULL)
+void ABomberman2GameMode::BeginPlay()
+{
+	TArray<AActor*> outActors;
+	UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), outActors);
+
+	for (int32 i = 0; i < outActors.Num(); i++)
 	{
-		DefaultPawnClass = PlayerPawnBPClass.Class;
+		auto newPlayer = UGameplayStatics::CreatePlayer(this, i, true);
+		if (!newPlayer)
+		{
+			// already created player controller
+			newPlayer = UGameplayStatics::GetPlayerController(this, i);
+		}
+
+		if (newPlayer && newPlayer->GetPawn())
+		{
+			newPlayer->GetPawn()->SetActorLocation(outActors[i]->GetActorLocation());
+		}
 	}
 }

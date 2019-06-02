@@ -11,7 +11,7 @@ class ABomberman2GameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+	void BeginPlay() override;
 public:
 	ABomberman2GameMode();
-
 };

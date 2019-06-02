@@ -6,6 +6,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Bomberman2Character.h"
 #include "Engine/World.h"
+#include "Engine/LocalPlayer.h"
 
 ABomberman2PlayerController::ABomberman2PlayerController()
 {
@@ -41,6 +42,15 @@ void ABomberman2PlayerController::SetupInputComponent()
 	// set up gameplay key bindings
 	Super::SetupInputComponent();
 
-	InputComponent->BindAxis("MoveForward", this, &ABomberman2PlayerController::MoveForward);
-	InputComponent->BindAxis("MoveRight", this, &ABomberman2PlayerController::MoveRight);
+	auto id = GetLocalPlayer()->GetControllerId();
+	if (id == 0)
+	{
+		InputComponent->BindAxis("MoveForward_P1", this, &ABomberman2PlayerController::MoveForward);
+		InputComponent->BindAxis("MoveRight_P1", this, &ABomberman2PlayerController::MoveRight);
+	}
+	else if (id == 1)
+	{
+		InputComponent->BindAxis("MoveForward_P2", this, &ABomberman2PlayerController::MoveForward);
+		InputComponent->BindAxis("MoveRight_P2", this, &ABomberman2PlayerController::MoveRight);
+	}
 }
