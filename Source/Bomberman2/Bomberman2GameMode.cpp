@@ -4,6 +4,9 @@
 #include "Bomberman2PlayerController.h"
 #include "Bomberman2Character.h"
 #include "UObject/ConstructorHelpers.h"
+#include "engine/World.h"
+
+#include "Engine/Classes/Kismet/GameplayStatics.h"
 
 ABomberman2GameMode::ABomberman2GameMode()
 {

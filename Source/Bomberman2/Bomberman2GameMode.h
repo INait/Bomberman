@@ -13,7 +13,5 @@ class ABomberman2GameMode : public AGameModeBase
 
 public:
 	ABomberman2GameMode();
+
 };
-
-
-
