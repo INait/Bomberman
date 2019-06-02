@@ -10,6 +10,8 @@
 #include "Materials/Material.h"
 #include "Engine/World.h"
 
+#include "Bomb.h"
+
 ABomberman2Character::ABomberman2Character()
 {
 	// Set size for player capsule
@@ -31,7 +33,32 @@ ABomberman2Character::ABomberman2Character()
 	PrimaryActorTick.bStartWithTickEnabled = true;
 }
 
+void ABomberman2Character::DropBombRequested()
+{
+	if (bombCount_ > 0)
+	{
+		FTransform transform = GetActorTransform();
+		auto bomb = GetWorld()->SpawnActor<ABomb>(bombClass_, transform);
+		spawnedBombs_.Add(bomb);
+		bombCount_--;
+	}
+}
+
 void ABomberman2Character::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+
+	for (auto iterator = spawnedBombs_.CreateIterator(); (bool)iterator; ++iterator)
+	{
+		auto bomb = *iterator;
+		if (bomb->IsTimedOut())
+		{
+			bomb->BlowUp();
+			bomb->Destroy();
+
+			iterator.RemoveCurrent();
+
+			bombCount_++;
+		}
+	}
 }

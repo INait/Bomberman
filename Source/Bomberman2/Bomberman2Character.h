@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Bomberman2Character.generated.h"
 
+class ABomb;
+
 UCLASS(Blueprintable)
 class ABomberman2Character : public ACharacter
 {
@@ -17,5 +19,18 @@ public:
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;
 
+	void DropBombRequested();
+
+protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Bomb")
+	int32 bombCount_ = 1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Bomb")
+	TSubclassOf<ABomb> bombClass_;
+
+private:
+
+	TSet<ABomb*> spawnedBombs_;
 };
 

@@ -37,6 +37,18 @@ void ABomberman2PlayerController::MoveRight(float AxisValue)
 	pawn->AddMovementInput(Direction, AxisValue);
 }
 
+void ABomberman2PlayerController::DropBomb()
+{
+	auto pawn = GetPawn();
+	check(pawn);
+
+	auto characterPawn = CastChecked<ABomberman2Character>(pawn);
+	if (characterPawn)
+	{
+		characterPawn->DropBombRequested();
+	}
+}
+
 void ABomberman2PlayerController::SetupInputComponent()
 {
 	// set up gameplay key bindings
@@ -47,10 +59,12 @@ void ABomberman2PlayerController::SetupInputComponent()
 	{
 		InputComponent->BindAxis("MoveForward_P1", this, &ABomberman2PlayerController::MoveForward);
 		InputComponent->BindAxis("MoveRight_P1", this, &ABomberman2PlayerController::MoveRight);
+		InputComponent->BindAction("DropBomb_P1", IE_Pressed, this, &ABomberman2PlayerController::DropBomb);
 	}
 	else if (id == 1)
 	{
 		InputComponent->BindAxis("MoveForward_P2", this, &ABomberman2PlayerController::MoveForward);
 		InputComponent->BindAxis("MoveRight_P2", this, &ABomberman2PlayerController::MoveRight);
+		InputComponent->BindAction("DropBomb_P2", IE_Pressed, this, &ABomberman2PlayerController::DropBomb);
 	}
 }
