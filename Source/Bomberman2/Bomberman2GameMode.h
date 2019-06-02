@@ -24,4 +24,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Walls")
 	TSubclassOf<ABreakableWall> breakableWallClass_;
+
+private:
+
+	TSet<ABreakableWall*> breakableWalls_;
 };

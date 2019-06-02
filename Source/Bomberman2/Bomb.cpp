@@ -15,7 +15,6 @@ ABomb::ABomb()
 void ABomb::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 bool ABomb::IsTimedOut() const

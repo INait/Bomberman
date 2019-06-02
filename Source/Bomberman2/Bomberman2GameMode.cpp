@@ -12,16 +12,7 @@
 #include "BreakableWall.h"
 #include "UnbreakableWall.h"
 
-namespace Cell
-{
-	float width = 100.0f;
-	float height = 100.0f;
-
-	int32 leftBorder = -5;
-	int32 rightBorder = 5;
-	int32 bottomBorder = -5;
-	int32 topBorder = 5;
-};
+#include "CellData.h"
 
 ABomberman2GameMode::ABomberman2GameMode()
 {
@@ -60,12 +51,12 @@ void ABomberman2GameMode::BeginPlay()
 
 
 	FTransform transform = FTransform::Identity;
-	transform.SetLocation(FVector{ 100.0f, 100.0f, 100.0f });
-	GetWorld()->SpawnActor<ABreakableWall>(breakableWallClass_, transform);
+	transform.SetLocation(Cell::GetCellLocationWithHeight(1, 1, 100.0f));
+	breakableWalls_.Add(GetWorld()->SpawnActor<ABreakableWall>(breakableWallClass_, transform));
 
-	transform.SetLocation(FVector{ 100.0f, 200.0f, 100.0f });
-	GetWorld()->SpawnActor<ABreakableWall>(breakableWallClass_, transform);
+	transform.SetLocation(Cell::GetCellLocationWithHeight(1, 2, 100.0f));
+	breakableWalls_.Add(GetWorld()->SpawnActor<ABreakableWall>(breakableWallClass_, transform));
 
-	transform.SetLocation(FVector{ 100.0f, 300.0f, 100.0f });
-	GetWorld()->SpawnActor<ABreakableWall>(breakableWallClass_, transform);
+	transform.SetLocation(Cell::GetCellLocationWithHeight(1, 3, 100.0f));
+	breakableWalls_.Add(GetWorld()->SpawnActor<ABreakableWall>(breakableWallClass_, transform));
 }

@@ -12,6 +12,8 @@
 
 #include "Bomb.h"
 
+#include "CellData.h"
+
 ABomberman2Character::ABomberman2Character()
 {
 	// Set size for player capsule
@@ -38,6 +40,8 @@ void ABomberman2Character::DropBombRequested()
 	if (bombCount_ > 0)
 	{
 		FTransform transform = GetActorTransform();
+		Cell::AlignWithCell(transform);
+
 		auto bomb = GetWorld()->SpawnActor<ABomb>(bombClass_, transform);
 		spawnedBombs_.Add(bomb);
 		bombCount_--;
