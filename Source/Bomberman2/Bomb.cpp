@@ -2,6 +2,9 @@
 
 #include "Bomb.h"
 
+#include "Engine/World.h"
+#include "Bomberman2GameMode.h"
+
 // Sets default values
 ABomb::ABomb()
 {
@@ -24,7 +27,9 @@ bool ABomb::IsTimedOut() const
 
 void ABomb::BlowUp()
 {
- // explosion
+	// bad dependency, change to signal
+	ABomberman2GameMode* gameMode = Cast<ABomberman2GameMode>(GetWorld()->GetAuthGameMode());
+	gameMode->Explosion(this);
 }
 
 // Called every frame

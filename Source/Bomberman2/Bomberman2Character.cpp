@@ -52,7 +52,7 @@ void ABomberman2Character::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
 
-	for (auto iterator = spawnedBombs_.CreateIterator(); (bool)iterator; ++iterator)
+	for (auto iterator = spawnedBombs_.CreateIterator(); iterator; ++iterator)
 	{
 		auto bomb = *iterator;
 		if (bomb->IsTimedOut())

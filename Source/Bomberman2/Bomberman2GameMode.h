@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "Bomberman2GameMode.generated.h"
 
+class ABomb;
 class ABreakableWall;
 class AUnbreakableWall;
 
@@ -18,6 +19,8 @@ class ABomberman2GameMode : public AGameModeBase
 public:
 	ABomberman2GameMode();
 
+	void Explosion(ABomb* bomb);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Walls")
 	TSubclassOf<AUnbreakableWall> unbreakableWallClass_;
@@ -25,7 +28,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Walls")
 	TSubclassOf<ABreakableWall> breakableWallClass_;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Walls")
+	float breakableWallsDensity_ = 0.3f;
+
 private:
 
-	TSet<ABreakableWall*> breakableWalls_;
+	void _GenerateGameField();
+
+	TSet<int32> freeCells_;
+	TMap<int32, AActor*> cellsContain_;
 };

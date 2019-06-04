@@ -12,13 +12,35 @@ namespace Cell
 		transform.SetLocation(location);
 	}
 
-	FVector GetCellLocation(int i, int j)
+	CellIndex GetCellFromLocation(const FVector& location)
+	{
+		CellIndex cellIndex;
+		cellIndex.x = static_cast<int32>(roundf(location.X / width));
+		cellIndex.y = static_cast<int32>(roundf(location.Y / height));
+
+		return cellIndex;
+	}
+
+	FVector GetCellLocation(int32 i, int32 j)
 	{
 		return GetCellLocationWithHeight(i, j, 0.0f);
 	}
 
-	FVector GetCellLocationWithHeight(int i, int j, float z)
+	FVector GetCellLocationWithHeight(int32 i, int32 j, float z)
 	{
 		return FVector{ i * width, j * height, z };
+	}
+
+	int32 GetLinearIndex(int32 i, int32 j)
+	{
+		return i + (rightBorder - leftBorder + 1) * j;
+	}
+
+	CellIndex GetIndexFromLinear(int32 index)
+	{
+		CellIndex cellIndex;
+		cellIndex.x = index % (rightBorder - leftBorder + 1);
+		cellIndex.y = index / (rightBorder - leftBorder + 1);
+		return cellIndex;
 	}
 }
