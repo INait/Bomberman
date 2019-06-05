@@ -2,6 +2,11 @@
 
 #include "BreakableWall.h"
 
+#include "Dropped.h"
+
+#include "engine/World.h"
+#include "Engine/Classes/Kismet/KismetMathLibrary.h"
+
 // Sets default values
 ABreakableWall::ABreakableWall()
 {
@@ -23,5 +28,18 @@ void ABreakableWall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+float ABreakableWall::GetDropChance() const
+{
+	return dropChance_;
+}
+
+void ABreakableWall::GeneratePossibleDrop()
+{
+	if (UKismetMathLibrary::RandomFloatInRange(0.0f, 1.0f) < dropChance_)
+	{
+		GetWorld()->SpawnActor<ADropped>(droppedClass_, GetActorTransform());
+	}
 }
 

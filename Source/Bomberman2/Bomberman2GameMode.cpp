@@ -35,6 +35,9 @@ void ABomberman2GameMode::Explosion(ABomb* bomb)
 			auto breakableWall = Cast<ABreakableWall>(cellsContain_[index]);
 			if (breakableWall)
 			{
+
+				breakableWall->GeneratePossibleDrop();
+
 				breakableWall->Destroy();
 				cellsContain_.Remove(index);
 			}
