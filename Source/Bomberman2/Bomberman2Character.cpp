@@ -10,6 +10,7 @@
 #include "Materials/Material.h"
 #include "Engine/World.h"
 
+#include "Dropped.h"
 #include "Bomb.h"
 
 #include "CellData.h"
@@ -18,6 +19,7 @@ ABomberman2Character::ABomberman2Character()
 {
 	// Set size for player capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ABomberman2Character::BeginOverlap);
 
 	// Don't rotate character to camera direction
 	bUseControllerRotationPitch = false;
@@ -48,6 +50,22 @@ void ABomberman2Character::DropBombRequested()
 	}
 }
 
+void ABomberman2Character::BeginOverlap(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	ADropped* dropped = CastChecked<ADropped>(OtherActor);
+	if (dropped)
+	{
+		bombCount_++;
+		dropped->Destroy();
+	}
+}
+
 void ABomberman2Character::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
@@ -62,7 +80,10 @@ void ABomberman2Character::Tick(float DeltaSeconds)
 
 			iterator.RemoveCurrent();
 
-			bombCount_++;
+			if (bombCount_ == 0)
+			{
+				bombCount_++;
+			}
 		}
 	}
 }
