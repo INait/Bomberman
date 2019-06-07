@@ -14,6 +14,8 @@ class ABomberman2PlayerController : public APlayerController
 public:
 	ABomberman2PlayerController();
 
+	void SetPlayerColor();
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;

@@ -32,6 +32,16 @@ void ABomb::BlowUp()
 	gameMode->Explosion(this);
 }
 
+int32 ABomb::GetBlowRadius() const
+{
+	return blowRadius_;
+}
+
+void ABomb::SetBlowRadius(int32 radius)
+{
+	blowRadius_ = radius;
+}
+
 // Called every frame
 void ABomb::Tick(float DeltaTime)
 {

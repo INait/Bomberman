@@ -25,12 +25,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop")
-	TSubclassOf<ADropped> droppedClass_;
-
-	UFUNCTION(BlueprintCallable, Category = "Drop")
-	float GetDropChance() const;
-
 	void GeneratePossibleDrop();
 
 protected:
@@ -38,6 +32,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Walls")
 	UStaticMeshComponent* wallMesh_;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Walls")
-	float dropChance_ = 0.2f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop")
+	TSubclassOf<ADropped> droppedBombClass_;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop")
+	TSubclassOf<ADropped> droppedBuffClass_;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop")
+	float dropBombChance_ = 0.3f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop")
+	float dropBuffChance_ = 0.2f;
 };

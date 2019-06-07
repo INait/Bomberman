@@ -30,16 +30,16 @@ void ABreakableWall::Tick(float DeltaTime)
 
 }
 
-float ABreakableWall::GetDropChance() const
-{
-	return dropChance_;
-}
-
 void ABreakableWall::GeneratePossibleDrop()
 {
-	if (UKismetMathLibrary::RandomFloatInRange(0.0f, 1.0f) < dropChance_)
+	float randomValue = UKismetMathLibrary::RandomFloatInRange(0.0f, 1.0f);
+	if (randomValue < dropBombChance_)
 	{
-		GetWorld()->SpawnActor<ADropped>(droppedClass_, GetActorTransform());
+		GetWorld()->SpawnActor<ADropped>(droppedBombClass_, GetActorTransform());
+	}
+	else if (randomValue < dropBombChance_ + dropBuffChance_)
+	{
+		GetWorld()->SpawnActor<ADropped>(droppedBuffClass_, GetActorTransform());
 	}
 }
 

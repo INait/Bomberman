@@ -7,6 +7,7 @@
 #include "Bomberman2Character.generated.h"
 
 class ABomb;
+class UPointLightComponent;
 
 UCLASS(Blueprintable)
 class ABomberman2Character : public ACharacter
@@ -21,10 +22,17 @@ public:
 
 	void DropBombRequested();
 
-protected:
+	void SetCharacterColor(const FLinearColor& color);
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Bomb")
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerLight")
+	UPointLightComponent* playerLight_;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bomb")
 	int32 bombCount_ = 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bomb")
+	int32 bombBlowRadius_ = 1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Bomb")
 	TSubclassOf<ABomb> bombClass_;

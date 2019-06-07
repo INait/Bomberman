@@ -14,6 +14,25 @@ ABomberman2PlayerController::ABomberman2PlayerController()
 	DefaultMouseCursor = EMouseCursor::Crosshairs;
 }
 
+void ABomberman2PlayerController::SetPlayerColor()
+{
+	auto characterPawn = CastChecked<ABomberman2Character>(GetPawn());
+	if (!characterPawn)
+	{
+		return;
+	}
+
+	auto id = GetLocalPlayer()->GetControllerId();
+	if (id == 0)
+	{
+		characterPawn->SetCharacterColor(FLinearColor::Blue);
+	}
+	else if (id == 1)
+	{
+		characterPawn->SetCharacterColor(FLinearColor::Green);
+	}
+}
+
 void ABomberman2PlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);

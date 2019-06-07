@@ -20,31 +20,6 @@ ABomberman2GameMode::ABomberman2GameMode()
 {
 }
 
-void ABomberman2GameMode::Explosion(ABomb* bomb)
-{
-	Cell::CellIndex bombIndex = Cell::GetCellFromLocation(bomb->GetActorLocation());
-
-	Cell::CellIndex explosionDirections[4] =
-	{ {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
-
-	for (Cell::CellIndex explosionCell : explosionDirections)
-	{
-		int32 index = Cell::GetLinearIndex(bombIndex.x + explosionCell.x, bombIndex.y + explosionCell.y);
-		if(cellsContain_.Contains(index))
-		{
-			auto breakableWall = Cast<ABreakableWall>(cellsContain_[index]);
-			if (breakableWall)
-			{
-
-				breakableWall->GeneratePossibleDrop();
-
-				breakableWall->Destroy();
-				cellsContain_.Remove(index);
-			}
-		}
-	}
-}
-
 void ABomberman2GameMode::BeginPlay()
 {
 	TArray<AActor*> outActors;
@@ -61,6 +36,10 @@ void ABomberman2GameMode::BeginPlay()
 
 		if (newPlayer && newPlayer->GetPawn())
 		{
+			if (auto bombermanController = CastChecked<ABomberman2PlayerController>(newPlayer))
+			{
+				bombermanController->SetPlayerColor();
+			}
 			newPlayer->GetPawn()->SetActorLocation(outActors[i]->GetActorLocation());
 		}
 	}
@@ -104,6 +83,39 @@ void ABomberman2GameMode::_GenerateGameField()
 			cellsContain_.Add(*iterator, GetWorld()->SpawnActor<ABreakableWall>(breakableWallClass_, transform));
 
 			iterator.RemoveCurrent();
+		}
+	}
+}
+
+void ABomberman2GameMode::Explosion(ABomb* bomb)
+{
+	Cell::CellIndex bombCellIndex = Cell::GetCellFromLocation(bomb->GetActorLocation());
+	int32 radius = bomb->GetBlowRadius();
+
+	TArray<Cell::CellIndex> explosionDirections;
+	for (int32 i = -radius; i <= radius; i++)
+	{
+		explosionDirections.Add(Cell::CellIndex{ i, 0 });
+		if (i != 0)
+		{
+			explosionDirections.Add(Cell::CellIndex{ 0, i });
+		}
+	}
+
+	for(auto it = explosionDirections.CreateConstIterator(); it; ++it)
+	{
+		int32 index = Cell::GetLinearIndex(bombCellIndex.x + it->x, bombCellIndex.y + it->y);
+		if (cellsContain_.Contains(index))
+		{
+			auto breakableWall = Cast<ABreakableWall>(cellsContain_[index]);
+			if (breakableWall)
+			{
+
+				breakableWall->GeneratePossibleDrop();
+
+				breakableWall->Destroy();
+				cellsContain_.Remove(index);
+			}
 		}
 	}
 }

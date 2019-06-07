@@ -26,16 +26,25 @@ public:
 	bool IsTimedOut() const;
 	void BlowUp();
 
+	UFUNCTION()
+	int32 GetBlowRadius() const;
+
+	UFUNCTION()
+	void SetBlowRadius(int32 radius);
+
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BombMesh")
 	UStaticMeshComponent* bombMesh_;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BombTime")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BombParams")
 	float bombTimeToBlow_ = 5.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BombTime")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BombParams")
 	bool isRemoteActivated = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BombParams")
+	int32 blowRadius_ = 1;
 
 private:
 

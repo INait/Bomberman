@@ -4,11 +4,14 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Components/DecalComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Components/PointLightComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Materials/Material.h"
 #include "Engine/World.h"
+#include "Engine/Classes/Kismet/GameplayStatics.h"
 
 #include "Dropped.h"
 #include "Bomb.h"
@@ -35,6 +38,9 @@ ABomberman2Character::ABomberman2Character()
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+
+	playerLight_ = CreateDefaultSubobject<UPointLightComponent>(TEXT("PlayerLight"));
+	playerLight_->SetupAttachment(RootComponent);
 }
 
 void ABomberman2Character::DropBombRequested()
@@ -45,8 +51,17 @@ void ABomberman2Character::DropBombRequested()
 		Cell::AlignWithCell(transform);
 
 		auto bomb = GetWorld()->SpawnActor<ABomb>(bombClass_, transform);
+		bomb->SetBlowRadius(bombBlowRadius_);
 		spawnedBombs_.Add(bomb);
 		bombCount_--;
+	}
+}
+
+void ABomberman2Character::SetCharacterColor(const FLinearColor& color)
+{
+	if (playerLight_)
+	{
+		playerLight_->SetLightColor(color);
 	}
 }
 
@@ -61,7 +76,15 @@ void ABomberman2Character::BeginOverlap(
 	ADropped* dropped = CastChecked<ADropped>(OtherActor);
 	if (dropped)
 	{
-		bombCount_++;
+		if (dropped->GetClass()->GetName() == L"DroppedBomb_C")
+		{
+			bombCount_++;
+		}
+		else if (dropped->GetClass()->GetName() == L"DroppedBuff_C")
+		{
+			bombBlowRadius_++;
+		}
+
 		dropped->Destroy();
 	}
 }
