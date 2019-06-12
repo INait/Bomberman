@@ -107,6 +107,11 @@ void ABomberman2Character::Tick(float DeltaSeconds)
 			{
 				bombCount_++;
 			}
+
+			if (bombBlowRadius_ > 1)
+			{
+				bombBlowRadius_--;
+			}
 		}
 	}
 }

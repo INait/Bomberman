@@ -28,6 +28,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Walls")
 	TSubclassOf<ABreakableWall> breakableWallClass_;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Enemies")
+	TSubclassOf<ACharacter> enemyClass_;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Walls")
 	float breakableWallsDensity_ = 0.3f;
 
