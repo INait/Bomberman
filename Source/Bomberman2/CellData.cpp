@@ -33,14 +33,14 @@ namespace Cell
 
 	int32 GetLinearIndex(int32 i, int32 j)
 	{
-		return i + (rightBorder - leftBorder + 1) * j;
+		return (i - leftBorder)  + (rightBorder - leftBorder + 1) * (j - bottomBorder);
 	}
 
 	CellIndex GetIndexFromLinear(int32 index)
 	{
 		CellIndex cellIndex;
-		cellIndex.x = index % (rightBorder - leftBorder + 1);
-		cellIndex.y = index / (rightBorder - leftBorder + 1);
+		cellIndex.x = index % (rightBorder - leftBorder + 1) + leftBorder;
+		cellIndex.y = index / (rightBorder - leftBorder + 1) + bottomBorder;
 		return cellIndex;
 	}
 }
