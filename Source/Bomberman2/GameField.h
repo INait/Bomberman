@@ -33,8 +33,8 @@ public:
 
 	struct CellIndex
 	{
-		int32 x;
-		int32 y;
+		int32 x; // height
+		int32 y; // width
 	};
 
 	// Called every frame

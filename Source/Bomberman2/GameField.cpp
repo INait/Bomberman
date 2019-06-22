@@ -38,14 +38,14 @@ void AGameField::BeginPlay()
 
 void AGameField::_GenerateBoundsGeometry()
 {
-	floorMesh_->SetWorldScale3D(FVector{ static_cast<float>(fieldWidth_), static_cast<float>(fieldHeight_), 1.0f });
+	floorMesh_->SetWorldScale3D(FVector{ static_cast<float>(fieldHeight_), static_cast<float>(fieldWidth_), 1.0f });
 
 	{
 		FTransform northWallTransform = FTransform::Identity;
 		northWallTransform.SetLocation(FVector{ cellSize_ * fieldHeight_ / 2.0f, 0.0f, 100.0f });
 
 		northWallMesh_->SetRelativeTransform(northWallTransform);
-		northWallMesh_->SetWorldScale3D(FVector{ 0.1f, static_cast<float>(fieldHeight_), 2.0f });
+		northWallMesh_->SetWorldScale3D(FVector{ 0.1f, static_cast<float>(fieldWidth_), 2.0f });
 	}
 
 	{
@@ -53,7 +53,7 @@ void AGameField::_GenerateBoundsGeometry()
 		southWallTransform.SetLocation(FVector{ -cellSize_ * fieldHeight_ / 2.0f, 0.0f, 100.0f });
 
 		southWallMesh_->SetRelativeTransform(southWallTransform);
-		southWallMesh_->SetWorldScale3D(FVector{ 0.1f, static_cast<float>(fieldHeight_), 2.0f });
+		southWallMesh_->SetWorldScale3D(FVector{ 0.1f, static_cast<float>(fieldWidth_), 2.0f });
 	}
 
 	{
@@ -61,7 +61,7 @@ void AGameField::_GenerateBoundsGeometry()
 		eastWallTransform.SetLocation(FVector{ 0.0f, cellSize_ * fieldWidth_ / 2.0f, 100.0f });
 
 		eastWallMesh_->SetRelativeTransform(eastWallTransform);
-		eastWallMesh_->SetWorldScale3D(FVector{ static_cast<float>(fieldWidth_), 0.1f, 2.0f });
+		eastWallMesh_->SetWorldScale3D(FVector{ static_cast<float>(fieldHeight_), 0.1f, 2.0f });
 	}
 
 	{
@@ -69,24 +69,24 @@ void AGameField::_GenerateBoundsGeometry()
 		westWallTransform.SetLocation(FVector{ 0.0f, -cellSize_ * fieldWidth_ / 2.0f, 100.0f });
 
 		westWallMesh_->SetRelativeTransform(westWallTransform);
-		westWallMesh_->SetWorldScale3D(FVector{ static_cast<float>(fieldWidth_), 0.1f, 2.0f });
+		westWallMesh_->SetWorldScale3D(FVector{ static_cast<float>(fieldHeight_), 0.1f, 2.0f });
 	}
 }
 
 void AGameField::_GenerateWalls()
 {
-	for (auto i =  -fieldWidth_ / 2; i <= fieldWidth_ / 2; i++)
+	for (auto i =  -fieldHeight_ / 2; i <= fieldHeight_ / 2; i++)
 	{
-		for (auto j = -fieldHeight_ / 2; j <= fieldHeight_ / 2; j++)
+		for (auto j = -fieldWidth_ / 2; j <= fieldWidth_ / 2; j++)
 		{
 			int32 index = GetLinearIndex(i, j);
 			freeCells_.Add(index);
 		}
 	}
 
-	for (auto i = -fieldWidth_ / 2 + 1; i <= fieldWidth_ / 2 - 1; i += 2)
+	for (auto i = -fieldHeight_ / 2 + 1; i <= fieldHeight_ / 2 - 1; i += 2)
 	{
-		for (auto j = -fieldHeight_ / 2 + 1; j <= fieldHeight_ / 2 - 1; j += 2)
+		for (auto j = -fieldWidth_ / 2 + 1; j <= fieldWidth_ / 2 - 1; j += 2)
 		{
 			FTransform transform = FTransform::Identity;
 			transform.SetLocation(FVector{ cellSize_ * i, cellSize_ * j, 100.0f });
