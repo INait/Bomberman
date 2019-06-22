@@ -31,6 +31,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Enemies")
 	TSubclassOf<ACharacter> enemyClass_;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Enemies")
+	int32 enemiesCount_ = 2;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Walls")
 	float breakableWallsDensity_ = 0.3f;
 

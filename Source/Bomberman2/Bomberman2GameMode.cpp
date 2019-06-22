@@ -22,9 +22,12 @@ ABomberman2GameMode::ABomberman2GameMode()
 
 void ABomberman2GameMode::BeginPlay()
 {
+	_GenerateGameField();
+
 	TArray<AActor*> outActors;
 	UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), outActors);
 
+	// TODO: select free cells to spawn players and enemies
 	for (int32 i = 0; i < outActors.Num(); i++)
 	{
 		auto newPlayer = UGameplayStatics::CreatePlayer(this, i, true);
@@ -44,7 +47,16 @@ void ABomberman2GameMode::BeginPlay()
 		}
 	}
 
-	_GenerateGameField();
+	for (int32 i = 0; i < enemiesCount_; i++)
+	{
+		Cell::CellIndex cell;
+		cell.x = i;
+		cell.y = 3;
+
+		FTransform transform = FTransform::Identity;
+		transform.SetLocation(FVector{ Cell::width * cell.x, Cell::height * cell.y, 150.0f });
+		GetWorld()->SpawnActor<ACharacter>(enemyClass_, transform);
+	}
 }
 
 void ABomberman2GameMode::_GenerateGameField()
