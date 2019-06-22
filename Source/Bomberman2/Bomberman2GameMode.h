@@ -7,8 +7,7 @@
 #include "Bomberman2GameMode.generated.h"
 
 class ABomb;
-class ABreakableWall;
-class AUnbreakableWall;
+class AGameField;
 
 UCLASS(minimalapi)
 class ABomberman2GameMode : public AGameModeBase
@@ -22,11 +21,8 @@ public:
 	void Explosion(ABomb* bomb);
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Walls")
-	TSubclassOf<AUnbreakableWall> unbreakableWallClass_;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Walls")
-	TSubclassOf<ABreakableWall> breakableWallClass_;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GameField")
+	TSubclassOf<AActor> gameFieldClass_;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Enemies")
 	TSubclassOf<ACharacter> enemyClass_;
@@ -34,13 +30,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Enemies")
 	int32 enemiesCount_ = 2;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Walls")
-	float breakableWallsDensity_ = 0.3f;
-
 private:
 
-	void _GenerateGameField();
+	UPROPERTY()
+	AGameField* gameField_;
 
-	TSet<int32> freeCells_;
-	TMap<int32, AActor*> cellsContain_;
+	void _GenerateGameField();
 };

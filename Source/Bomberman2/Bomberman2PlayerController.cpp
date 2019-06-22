@@ -40,28 +40,25 @@ void ABomberman2PlayerController::PlayerTick(float DeltaTime)
 
 void ABomberman2PlayerController::MoveForward(float AxisValue)
 {
-	auto pawn = GetPawn();
-	check(pawn);
-
-	const FVector Direction = FVector{ 1.0f, 0.0f, 0.0f };
-	pawn->AddMovementInput(Direction, AxisValue);
+	if (auto pawn = GetPawn())
+	{
+		const FVector Direction = FVector{ 1.0f, 0.0f, 0.0f };
+		pawn->AddMovementInput(Direction, AxisValue);
+	}
 }
 
 void ABomberman2PlayerController::MoveRight(float AxisValue)
 {
-	auto pawn = GetPawn();
-	check(pawn);
-
-	const FVector Direction = FVector{ 0.0f, 1.0f, 0.0f };
-	pawn->AddMovementInput(Direction, AxisValue);
+	if (auto pawn = GetPawn())
+	{
+		const FVector Direction = FVector{ 0.0f, 1.0f, 0.0f };
+		pawn->AddMovementInput(Direction, AxisValue);
+	}
 }
 
 void ABomberman2PlayerController::DropBomb()
 {
-	auto pawn = GetPawn();
-	check(pawn);
-
-	auto characterPawn = CastChecked<ABomberman2Character>(pawn);
+	auto characterPawn = CastChecked<ABomberman2Character>(GetPawn());
 	if (characterPawn)
 	{
 		characterPawn->DropBombRequested();
